@@ -7,12 +7,14 @@ on:
   push:
     branches:
       - main
+      - dev
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    environment: 
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Dev' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Dev'
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Dev' }}
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -56,7 +58,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'faxifolidev'
+          app-name: ${{ vars.APPNAME }}
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZURE_PUBLISHING_PROFILE }}
           package: .
