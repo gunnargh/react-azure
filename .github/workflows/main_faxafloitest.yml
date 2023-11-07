@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'faxafloitest'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_35878D6B4DFA44ECA0DF714646F87BAF }}
+          publish-profile: ${{ secrets.AZURE_PUBLISHING_PROFILE }}
           package: .
